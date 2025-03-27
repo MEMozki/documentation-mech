@@ -54,13 +54,19 @@ MEchgram is designed to simplify Telegram bot development by providing a consist
 
 ## Installation
 
-Clone the repository and install via pip (from the root directory where `setup.py` is located):
+Clone the repository and install via pip or install.py (from the root directory where `setup.py` is located):
+
+```bash
+python install.py
+```
+
+# Or
 
 ```bash
 pip install .
 ```
 
-Once installed, MEchgram appears in your package list as **MEchgram**.
+Once installed, mechgram appears in your package list as **mechgram**.
 
 ---
 
@@ -70,7 +76,7 @@ A typical project structure might look like this:
 
 ```
 MEchgram/
-├── MEchgram/
+├── mechgram/
 │   ├── __init__.py          # Exports Bot and Types
 │   ├── bot.py               # Core Bot class
 │   └── types.py             # Data types: Message, Chat, User, etc.
@@ -91,7 +97,7 @@ MEchgram/
 The simplest bot just responds to a command. For example:
 
 ```python
-from MEchgram import Bot
+from mechgram import Bot
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -109,7 +115,7 @@ This bot registers a handler for the `/start` command and then runs the polling 
 The `Types` module offers convenient wrappers for Telegram objects. For example:
 
 ```python
-from MEchgram import Bot, Types
+from mechgram import Bot, Types
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -117,7 +123,7 @@ bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 def start_handler(update):
     msg = Types.Message(update["message"])
     user_name = msg.sender.full_name
-    return f"Hello, {user_name}! Welcome to MEchgram."
+    return f"Hello, {user_name}! Welcome to mechgram."
 
 bot.run()
 ```
@@ -130,7 +136,7 @@ Here, `Types.Message` gives you easy access to properties like text, chat, and s
 
 ### The Bot Class
 
-The `Bot` class is the central component of MEchgram. Below is a detailed overview of its methods.
+The `Bot` class is the central component of mechgram. Below is a detailed overview of its methods.
 
 #### Initialization
 
@@ -252,12 +258,12 @@ These methods allow you to switch from polling to webhook mode.
 #### Asynchronous Operation
 
 - **async_run()**  
-  An asynchronous wrapper that runs the synchronous `run()` method in an executor, so you can integrate MEchgram into an async application.
+  An asynchronous wrapper that runs the synchronous `run()` method in an executor, so you can integrate mechgram into an async application.
 
 Example:
 ```python
 import asyncio
-from MEchgram import Bot
+from mechgram import Bot
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -320,7 +326,7 @@ class Types:
 This allows you to import both Bot and Types like so:
 
 ```python
-from MEchgram import Bot, Types
+from mechgram import Bot, Types
 ```
 
 ---
@@ -349,7 +355,7 @@ Integrate this in your general message handler to decide if the message should b
 
 ### Chat and Group Management
 
-MEchgram includes methods for chat administration and settings, such as:
+mechgram includes methods for chat administration and settings, such as:
 - **get_chat(chat_id)**
 - **get_chat_administrators(chat_id)**
 - **get_chat_members_count(chat_id)**
@@ -371,7 +377,7 @@ These functions let you manage the chat environment directly from your bot.
 
 ### Simple Echo Bot
 ```python
-from MEchgram import Bot, Types
+from mechgram import Bot, Types
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -389,7 +395,7 @@ bot.run()
 
 ### Inline Keyboard Example
 ```python
-from MEchgram import Bot, Types
+from mechgram import Bot, Types
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -406,7 +412,7 @@ bot.run()
 ### Asynchronous Bot Example
 ```python
 import asyncio
-from MEchgram import Bot
+from mechgram import Bot
 
 bot = Bot(token="YOUR_BOT_TOKEN_HERE")
 
@@ -431,7 +437,7 @@ Contributions, bug reports, and feature requests are welcome. Please open an iss
 
 ## License
 
-MEchgram is licensed under the MIT License. See the LICENSE file for details.
+mechgram is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
