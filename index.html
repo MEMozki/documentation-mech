@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MEch DOCU</title>
+  <title>Markdown Viewer</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-dark.min.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
@@ -33,23 +33,33 @@
 </head>
 <body>
   <div class="container">
-    <img src="MEchlogo.png" alt="logo mech" class="top-image">
-    <article id="content" class="markdown-body">MEchdoc...</article>
+    <img src="MEchlogo.png" alt="Top Image" class="top-image">
+    <article id="content" class="markdown-body">Loading...</article>
   </div>
 
   <script>
+    // Включаем генерацию ID для заголовков
+    marked.setOptions({
+      headerIds: true
+    });
+
     fetch('README.md')
       .then(response => response.text())
       .then(md => {
-        let html = marked.parse(md);
-
-        // Автоматически добавляем якоря к заголовкам
-        html = html.replace(/<h(\d) id="([^"]+)">/g, (match, level, id) => {
-          return `<h${level} id="${id}"><a href="#${id}" style="color: inherit; text-decoration: none;">`;
-        });
-
-        document.getElementById('content').innerHTML = html;
+        document.getElementById('content').innerHTML = marked.parse(md);
       });
+
+    // Прокрутка к якорям при клике
+    document.addEventListener("click", function (e) {
+      if (e.target.tagName === "A" && e.target.getAttribute("href").startsWith("#")) {
+        e.preventDefault();
+        const targetId = e.target.getAttribute("href").substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    });
   </script>
 </body>
 </html>
