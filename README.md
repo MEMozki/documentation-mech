@@ -31,6 +31,8 @@ MEchgram is a powerful and flexible Python library for building Telegram bots. I
   - [Next-Step Handlers](#next-step-handlers)
   - [Chat and Group Management](#chat-and-group-management)
 - [Examples and Templates](#examples-and-templates)
+- [FSMContext](#FSMContext)
+  - [Bot Example](#Example)
 - [Contributing](#contributing)
 - [License](#license)
 - [Support and Contact](#support-and-contact)
@@ -427,6 +429,54 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## FSMContext
+
+- **State Storage:**  
+  Stores the current state for each user (identified by user ID) internally in a dictionary.
+
+- **Set State:**  
+  Use `set_state(user_id, state)` to assign a specific state to a user.
+
+- **Get State:**  
+  Retrieve the current state for a user using `get_state(user_id)`. If no state is set, it returns `None`.
+
+- **Reset State:**  
+  Remove a user's state with `reset_state(user_id)`.
+
+### Example
+
+After importing Mechgram, the FSM functionality is available via the `fsm` attribute of your Bot instance:
+
+```python
+from mechgram import Bot
+
+bot = Bot(token="YOUR_BOT_TOKEN_HERE")
+
+@bot.on("/start")
+def start_handler(update):
+    chat_id = update["message"]["chat"]["id"]
+    # Reset any existing state for this user
+    bot.fsm.reset_state(chat_id)
+    return "Welcome! Please enter your name:"
+
+@bot.on("")
+def text_handler(update):
+    chat_id = update["message"]["chat"]["id"]
+    current_state = bot.fsm.get_state(chat_id)
+    if current_state is None:
+        # Set state and ask user for their name
+        bot.fsm.set_state(chat_id, "waiting_for_name")
+        return "Please provide your name."
+    elif current_state == "waiting_for_name":
+        name = update["message"].get("text", "")
+        bot.fsm.reset_state(chat_id)
+        return f"Hello, {name}!"
+    else:
+        return "Command not recognized."
+
+bot.run()
+```
+
 ---
 
 ## Contributing
@@ -450,7 +500,3 @@ If you have any questions or need assistance, please contact the maintainers or 
 *This documentation provides an extensive overview of the MEchgram library, its API, and how to build Telegram bots with it. Feel free to extend it further as new features are added.*
 
 ---
-
-```
-This documentation is written in Markdown and covers all aspects of the library, including all major functions and usage examples. You can adjust and expand the content as needed for your website or project documentation.
-```
