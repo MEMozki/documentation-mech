@@ -1,7 +1,7 @@
 ```markdown
 # MEchgram Library Documentation
 ```
-MEchgram is a powerful and flexible Python library for building Telegram bots. It abstracts the Telegram Bot API and provides a simple interface for sending messages, media, handling inline queries and callback queries, administering chats, and much more. MEchgram also includes a helpful `Types` module to simplify working with data structures (like Message, Chat, and User).
+MEchgram is a powerful and flexible Python library for building Telegram bots. It abstracts the Telegram Bot API and provides a simple interface for sending messages, media, handling inline queries and callback queries, administering chats, and much more. MEchgram also includes a helpful `Types` & `FSMContext` module to simplify working with data structures (like Message, Chat, and User).
 
 ---
 
