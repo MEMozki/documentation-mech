@@ -33,6 +33,11 @@ MEchgram is a powerful and flexible Python library for building Telegram bots. I
 - [Examples and Templates](#examples-and-templates)
 - [FSMContext](#FSMContext)
   - [Bot Example](#Example)
+- [Dispatcher](#Dispatcher)
+  - [Basic Usage Example](#Basic-Usage-Example)
+- [Notification](#Notification)
+  - [Screen notification](#send_screen_notification)
+  - [Top notification](#send_top_notification)
 - [Contributing](#contributing)
 - [License](#license)
 - [Support and Contact](#support-and-contact)
@@ -476,6 +481,92 @@ def text_handler(update):
 
 bot.run()
 ```
+
+## Dispatcher
+
+The `Dispatcher` in Mechgram is an optional, flexible module designed to help you manage and route incoming updates. It allows you to:
+
+- **Register Handlers by Update Type:**  
+  Easily assign functions to handle specific types of updates such as "message", "inline_query", or "callback_query". This lets you separate your logic based on the kind of event received.
+
+- **Use Middleware:**  
+  Add middleware functions that preprocess updates before they reach your handlers. For example, you can log all incoming updates or apply filters globally.
+
+### Basic Usage Example
+
+To use the dispatcher, import it from the library and create an instance by passing your Bot instance:
+
+```python
+from mechgram import Bot, Dispatcher
+
+bot = Bot(token="YOUR_BOT_TOKEN_HERE")
+dispatcher = Dispatcher(bot)
+
+# Add a simple logging middleware
+class LoggingMiddleware:
+    def process_update(self, update: dict) -> dict:
+        print("Processing update:", update)
+        return update
+
+dispatcher.add_middleware(LoggingMiddleware())
+
+# Register a handler for inline queries
+dispatcher.register_handler("inline_query", lambda update: print("Received inline_query:", update))
+
+# Your bot can still register command handlers via bot.on() as usual
+@bot.on("/start")
+def start_handler(update):
+    return "Hello! Welcome to Mechgram."
+
+# In the bot's run loop, updates can be processed through the dispatcher.
+bot.run()
+```
+
+With the dispatcher, you gain more granular control over how updates are processed, enabling more modular and maintainable bot code.
+
+---
+
+## Notification
+
+## send_top_notification
+
+The `send_top_notification` method provides a convenient way to send a notification message that remains visible at the top of the chat. This is typically achieved by sending a message and then pinning it—ensuring that important notifications are easily noticed by users.
+
+### Key Features:
+- **Sends a Message:**  
+  Sends your notification text to the specified chat.
+- **Pins the Message:**  
+  Automatically attempts to pin the message (if the bot has the appropriate admin rights) so that it stays at the top.
+
+### Usage Example
+
+```python
+# Send a top notification that is pinned in the chat
+bot.send_top_notification(chat_id=123456789, text="Important Update: The system will go down for maintenance at 10 PM.", disable_notification=True)
+```
+
+This function streamlines the process of ensuring that key information remains prominent in a chat.
+
+---
+
+## send_screen_notification
+
+The `send_screen_notification` method allows your bot to deliver a screen notification (or alert) to the user. Unlike standard messages, this notification appears as a popup, typically in response to a callback query. This can be useful for urgent alerts or confirmations.
+
+### Key Features:
+- **Popup Alert:**  
+  Sends a notification as an alert that pops up on the user's screen.
+- **Callback-Based:**  
+  Utilizes the callback query mechanism to display the alert, making it an interactive and immediate feedback method.
+
+### Usage Example
+
+```python
+# Respond to a callback query with a screen notification (popup alert)
+bot.send_screen_notification(callback_query_id="callback123", text="Operation successful!", cache_time=0)
+```
+
+This method is ideal when you need to immediately inform the user about the outcome of an action without cluttering the chat with additional messages.
 
 ---
 
